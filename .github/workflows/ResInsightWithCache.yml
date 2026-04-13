@@ -76,13 +76,6 @@ jobs:
       - name: Bootstrap vcpkg
         run: vendor/ResInsight/ThirdParty/vcpkg/bootstrap-vcpkg.sh
 
-      - name: Restore vcpkg cache
-        id: vcpkg-cache
-        uses: TAServers/vcpkg-cache@v3
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          prefix: vcpkg-g++-14/
-
       - name: Install Qt
         uses: CeetronSolutions/install-qt-action@bump-node24
         with:
@@ -95,8 +88,6 @@ jobs:
       - name: Configure ResInsight
         shell: bash
         env:
-          VCPKG_FEATURE_FLAGS: "binarycaching"
-          VCPKG_BINARY_SOURCES: "clear;files,${{ steps.vcpkg-cache.outputs.path }},readwrite"
           CC: gcc-14
           CXX: g++-14
         run: >

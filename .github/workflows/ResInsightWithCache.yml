@@ -1,0 +1,119 @@
+name: Build and Test
+
+on:
+  push:
+  pull_request:
+
+concurrency:
+  group: build-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-24.04
+    env:
+      BUILD_TYPE: Release
+      BUILDCACHE_DIR: ${{ github.workspace }}/buildcache_dir
+      BUILDCACHE_ACCURACY: SLOPPY
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          submodules: true
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+
+      - name: Get Python executable path
+        shell: bash
+        id: python-path
+        run: echo "PYTHON_EXECUTABLE=$(python -c 'import sys; import pathlib; print(pathlib.PurePath(sys.executable).as_posix())')" >> $GITHUB_OUTPUT
+
+      - name: Install Python dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install rips pytest taskekrabbe
+          pip install -r vendor/ResInsight/GrpcInterface/Python/build-requirements.txt
+
+      - name: Install Linux dependencies
+        run: |
+          sudo apt-get update --option="APT::Acquire::Retries=3"
+          sudo apt-get install --option="APT::Acquire::Retries=3" -y \
+            libxkbcommon-x11-0 libgl1-mesa-dev mesa-common-dev \
+            libglfw3-dev libglu1-mesa-dev libhdf5-dev ninja-build
+
+      - name: Install gcc-14
+        run: |
+          sudo apt-get install --option="APT::Acquire::Retries=3" -y gcc-14 g++-14
+
+      - name: Setup buildcache
+        uses: CeetronSolutions/setup-buildcache-action@v1.1
+
+      - name: Get current date
+        id: current-time
+        shell: bash
+        run: echo "formattedTime=$(date -u +%Y-%m-%d)" >> $GITHUB_OUTPUT
+
+      - name: Cache Buildcache
+        uses: actions/cache@v5
+        with:
+          path: ${{ env.BUILDCACHE_DIR }}
+          key: ubuntu-gcc-14-cache-${{ steps.current-time.outputs.formattedTime }}
+
+      - name: Create Folder for buildcache
+        run: mkdir -p ${{ env.BUILDCACHE_DIR }}
+
+      - name: Bootstrap vcpkg
+        run: vendor/ResInsight/ThirdParty/vcpkg/bootstrap-vcpkg.sh
+
+      - name: Restore vcpkg cache
+        id: vcpkg-cache
+        uses: TAServers/vcpkg-cache@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          prefix: vcpkg-g++-14/
+
+      - name: Install Qt
+        uses: CeetronSolutions/install-qt-action@bump-node24
+        with:
+          version: 6.7.0
+          dir: "${{ github.workspace }}/Qt/"
+          cache: true
+          setup-python: false
+          modules: "qtnetworkauth"
+
+      - name: Configure ResInsight
+        shell: bash
+        env:
+          VCPKG_FEATURE_FLAGS: "binarycaching"
+          VCPKG_BINARY_SOURCES: "clear;files,${{ steps.vcpkg-cache.outputs.path }},readwrite"
+          CC: gcc-14
+          CXX: g++-14
+        run: >
+          cmake -G Ninja
+          -S vendor/ResInsight
+          -B vendor/ResInsight/build
+          -DVCPKG_BUILD_TYPE=release
+          -DCMAKE_BUILD_TYPE=Release
+          -DRESINSIGHT_ENABLE_GRPC=ON
+          -DRESINSIGHT_GRPC_PYTHON_EXECUTABLE=${{ steps.python-path.outputs.PYTHON_EXECUTABLE }}
+          -DRESINSIGHT_GRPC_DOWNLOAD_PYTHON_MODULE=true
+          -DRESINSIGHT_ENABLE_HDF5=false
+          -DRESINSIGHT_INCLUDE_APPLICATION_UNIT_TESTS=false
+          -DCMAKE_TOOLCHAIN_FILE=ThirdParty/vcpkg/scripts/buildsystems/vcpkg.cmake
+
+      - name: Build ResInsight
+        run: ninja -C vendor/ResInsight/build
+
+      - name: Stats for buildcache
+        run: buildcache -s
+
+      - name: Run tests
+        env:
+          RESINSIGHT_EXECUTABLE: ${{ github.workspace }}/vendor/ResInsight/build/ResInsight
+        run: |
+          cd ${{ github.workspace }}
+          PYTHONPATH=${{ github.workspace }} pytest tests/ -v

@@ -2,8 +2,6 @@
 
 from __future__ import annotations
 
-from unittest.mock import MagicMock
-
 from taskekrabbe import ExecutionContext
 
 from models import GridCase, GridView
@@ -17,15 +15,10 @@ class TestCreateGridView:
     def test_run_creates_view(
         self,
         ctx: ExecutionContext,
-        grid_case_model: GridCase,
-        mock_eclipse_case: MagicMock,
+        loaded_grid_case: GridCase,
     ) -> None:
-        mock_view = MagicMock()
-        mock_eclipse_case.create_view.return_value = mock_view
-
         task = CreateGridView()
-        result = task.run(grid_case_model, ctx)
+        result = task.run(loaded_grid_case, ctx)
 
         assert isinstance(result, GridView)
-        assert result.value is mock_view
-        mock_eclipse_case.create_view.assert_called_once()
+        assert result.value is not None

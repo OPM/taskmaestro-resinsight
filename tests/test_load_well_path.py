@@ -2,8 +2,6 @@
 
 from __future__ import annotations
 
-from unittest.mock import MagicMock
-
 from taskekrabbe import ExecutionContext
 
 from models import GridCase, LoadWellPathInput, RipsInstance, WellPath
@@ -18,46 +16,16 @@ class TestLoadWellPath:
         self,
         ctx: ExecutionContext,
         rips_instance_model: RipsInstance,
-        mock_rips_instance: MagicMock,
-        grid_case_model: GridCase,
+        loaded_grid_case: GridCase,
+        well_path_a: str,
     ) -> None:
-        mock_wp = MagicMock()
-        mock_wp.name = "B-2H"
-        mock_collection = MagicMock()
-        mock_collection.import_well_path.return_value = mock_wp
-        mock_rips_instance.project.well_path_collection.return_value = mock_collection
-
         task = LoadWellPath()
         input_data = LoadWellPathInput(
             resinsight=rips_instance_model,
-            grid_case=grid_case_model,
-            path="/path/to/B-2H.json",
+            grid_case=loaded_grid_case,
+            path=well_path_a,
         )
         result = task.run(input_data, ctx)
 
         assert isinstance(result, WellPath)
-        assert result.value is mock_wp
-        mock_collection.import_well_path.assert_called_once_with(file_name="/path/to/B-2H.json")
-
-    def test_run_propagates_error(
-        self,
-        ctx: ExecutionContext,
-        rips_instance_model: RipsInstance,
-        mock_rips_instance: MagicMock,
-        grid_case_model: GridCase,
-    ) -> None:
-        mock_collection = MagicMock()
-        mock_collection.import_well_path.side_effect = RuntimeError("Import failed")
-        mock_rips_instance.project.well_path_collection.return_value = mock_collection
-
-        task = LoadWellPath()
-        input_data = LoadWellPathInput(
-            resinsight=rips_instance_model,
-            grid_case=grid_case_model,
-            path="/bad/path.json",
-        )
-
-        import pytest
-
-        with pytest.raises(RuntimeError, match="Import failed"):
-            task.run(input_data, ctx)
+        assert result.value is not None

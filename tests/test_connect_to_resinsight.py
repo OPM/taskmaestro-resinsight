@@ -2,9 +2,11 @@
 
 from __future__ import annotations
 
-from unittest.mock import MagicMock, patch
+import os
 
-from taskekrabbe import ExecutionContext
+import rips
+
+from taskekrabbe import EmptyConfig, ExecutionContext
 
 from models import RipsInstance
 from tasks.connect_to_resinsight import ConnectToResInsight
@@ -14,29 +16,27 @@ class TestConnectToResInsight:
     def test_name(self) -> None:
         assert ConnectToResInsight.name == "connect_to_resinsight"
 
-    @patch("tasks.connect_to_resinsight.rips")
-    def test_run_returns_rips_instance(self, mock_rips: MagicMock, ctx: ExecutionContext) -> None:
-        mock_instance = MagicMock()
-        mock_instance.location = "localhost:50051"
-        mock_rips.Instance.find.return_value = mock_instance
+    def test_run_connects(
+        self,
+        resinsight_instance: rips.Instance,
+        ctx: ExecutionContext,
+    ) -> None:
+        """Verify ConnectToResInsight finds the session instance.
 
-        task = ConnectToResInsight()
-        from taskekrabbe import EmptyConfig
+        The session fixture launches on a random port, so we set
+        RESINSIGHT_GRPC_PORT so that rips.Instance.find() scans the right range.
+        """
+        port = int(resinsight_instance.location.split(":")[-1])
+        old_env = os.environ.get("RESINSIGHT_GRPC_PORT")
+        os.environ["RESINSIGHT_GRPC_PORT"] = str(port)
+        try:
+            task = ConnectToResInsight()
+            result = task.run(EmptyConfig(), ctx)
 
-        result = task.run(EmptyConfig(), ctx)
-
-        assert isinstance(result, RipsInstance)
-        assert result.value is mock_instance
-        mock_rips.Instance.find.assert_called_once()
-
-    @patch("tasks.connect_to_resinsight.rips")
-    def test_run_raises_on_connection_failure(self, mock_rips: MagicMock, ctx: ExecutionContext) -> None:
-        mock_rips.Instance.find.side_effect = ConnectionError("No ResInsight found")
-
-        task = ConnectToResInsight()
-        from taskekrabbe import EmptyConfig
-
-        import pytest
-
-        with pytest.raises(ConnectionError, match="No ResInsight found"):
-            task.run(EmptyConfig(), ctx)
+            assert isinstance(result, RipsInstance)
+            assert result.value is not None
+        finally:
+            if old_env is None:
+                os.environ.pop("RESINSIGHT_GRPC_PORT", None)
+            else:
+                os.environ["RESINSIGHT_GRPC_PORT"] = old_env

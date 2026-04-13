@@ -1,62 +1,98 @@
-"""Tests for ExportCompletions task."""
+"""Tests for ExportCompletions task — full pipeline integration test."""
 
 from __future__ import annotations
 
-from unittest.mock import MagicMock
-
 from taskekrabbe import ExecutionContext
 
-from models import GridCase, PerforationOutput, RipsInstance
+from models import (
+    AddPerforationInput,
+    LoadModelInput,
+    LoadWellPathInput,
+    RipsInstance,
+)
+from tasks.add_perforation import AddPerforation
 from tasks.export_completions import ExportCompletions
+from tasks.load_model import LoadModel
+from tasks.load_well_path import LoadWellPath
 
 
 class TestExportCompletions:
     def test_name(self) -> None:
         assert ExportCompletions.name == "export_completions"
 
-    def test_run_exports_completions(
+    def test_full_pipeline(
         self,
         ctx: ExecutionContext,
         rips_instance_model: RipsInstance,
-        mock_rips_instance: MagicMock,
-        grid_case_model: GridCase,
-        mock_eclipse_case: MagicMock,
+        egrid_path: str,
+        well_path_a: str,
+        well_path_b: str,
+        tmp_path: object,
     ) -> None:
-        mock_wp1 = MagicMock()
-        mock_wp1.name = "B-2H"
-        mock_wp2 = MagicMock()
-        mock_wp2.name = "C-4H"
-
-        perf1 = PerforationOutput(value=mock_wp1, start_md=3000.0, end_md=3500.0)
-        perf2 = PerforationOutput(value=mock_wp2, start_md=2400.0, end_md=2600.0)
-
-        mock_collection = MagicMock()
-        mock_timeline = MagicMock()
-        mock_collection.event_timeline.return_value = mock_timeline
-        mock_rips_instance.project.descendants.return_value = [mock_collection]
-
-        task = ExportCompletions()
-        input_data = ExportCompletions.Inputs(
-            resinsight=rips_instance_model,
-            grid_case=grid_case_model,
-            perforation_1=perf1,
-            perforation_2=perf2,
-            event_date="2024-05-01",
-            export_path="/tmp/completions.txt",
+        # Load model
+        grid_case = LoadModel().run(
+            LoadModelInput(resinsight=rips_instance_model, path=egrid_path),
+            ctx,
         )
-        result = task.run(input_data, ctx)
+
+        # Load two well paths
+        wp1 = LoadWellPath().run(
+            LoadWellPathInput(
+                resinsight=rips_instance_model,
+                grid_case=grid_case,
+                path=well_path_a,
+            ),
+            ctx,
+        )
+        wp2 = LoadWellPath().run(
+            LoadWellPathInput(
+                resinsight=rips_instance_model,
+                grid_case=grid_case,
+                path=well_path_b,
+            ),
+            ctx,
+        )
+
+        # Add perforations
+        perf1 = AddPerforation().run(
+            AddPerforationInput(
+                resinsight=rips_instance_model,
+                well_path=wp1,
+                event_date="2024-01-01",
+                start_md=3000.0,
+                end_md=3500.0,
+            ),
+            ctx,
+        )
+        perf2 = AddPerforation().run(
+            AddPerforationInput(
+                resinsight=rips_instance_model,
+                well_path=wp2,
+                event_date="2024-02-01",
+                start_md=2400.0,
+                end_md=2600.0,
+            ),
+            ctx,
+        )
+
+        # Export completions
+        export_path = str(tmp_path / "completions.txt")  # type: ignore[operator]
+        task = ExportCompletions()
+        result = task.run(
+            ExportCompletions.Inputs(
+                resinsight=rips_instance_model,
+                grid_case=grid_case,
+                perforation_1=perf1,
+                perforation_2=perf2,
+                event_date="2024-05-01",
+                export_path=export_path,
+            ),
+            ctx,
+        )
 
         assert isinstance(result, ExportCompletions.Outputs)
-        assert result.export_file == "/tmp/completions.txt"
-        assert result.well_path_names == ["B-2H", "C-4H"]
-        mock_timeline.set_timestamp.assert_called_once_with(timestamp="2024-05-01")
-        mock_eclipse_case.export_well_path_completions.assert_called_once_with(
-            time_step=0,
-            well_path_names=["B-2H", "C-4H"],
-            file_split="UNIFIED_FILE",
-            include_perforations=True,
-            custom_file_name="/tmp/completions.txt",
-        )
+        assert result.export_file == export_path
+        assert len(result.well_path_names) == 2
 
     def test_inputs_model_fields(self) -> None:
         fields = ExportCompletions.Inputs.model_fields

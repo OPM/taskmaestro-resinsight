@@ -32,10 +32,17 @@ jobs:
         id: python-path
         run: echo "PYTHON_EXECUTABLE=$(python -c 'import sys; import pathlib; print(pathlib.PurePath(sys.executable).as_posix())')" >> $GITHUB_OUTPUT
 
+      - name: Checkout taskekrabbe
+        uses: actions/checkout@v6
+        with:
+          repository: kriben/taskekrabbe
+          path: taskekrabbe
+
       - name: Install Python dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install rips pytest taskekrabbe
+          pip install rips pytest
+          pip install ./taskekrabbe
           pip install -r vendor/ResInsight/GrpcInterface/Python/build-requirements.txt
 
       - name: Install Linux dependencies
@@ -114,6 +121,5 @@ jobs:
       - name: Run tests
         env:
           RESINSIGHT_EXECUTABLE: ${{ github.workspace }}/vendor/ResInsight/build/ResInsight
-        run: |
-          cd ${{ github.workspace }}
-          PYTHONPATH=${{ github.workspace }} pytest tests/ -v
+          PYTHONPATH: ${{ github.workspace }}
+        run: pytest tests/ -v

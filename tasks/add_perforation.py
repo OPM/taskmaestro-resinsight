@@ -14,7 +14,9 @@ class AddPerforation(Task[AddPerforationInput, PerforationOutput]):
 
     name = "add_perforation"
 
-    def run(self, input: AddPerforationInput, ctx: ExecutionContext) -> PerforationOutput:
+    def run(
+        self, input: AddPerforationInput, ctx: ExecutionContext
+    ) -> PerforationOutput:
         instance = input.resinsight.value
         well = input.well_path.value
         ctx.logger.info(

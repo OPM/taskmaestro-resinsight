@@ -52,4 +52,5 @@ jobs:
         env:
           RESINSIGHT_EXECUTABLE: ${{ github.workspace }}/resinsight-nightly/bin/ResInsight
           PYTHONPATH: ${{ github.workspace }}
+          QT_QPA_PLATFORM: offscreen
         run: pytest tests/ -v

@@ -11,10 +11,6 @@ concurrency:
 jobs:
   build-and-test:
     runs-on: ubuntu-24.04
-    env:
-      BUILD_TYPE: Release
-      BUILDCACHE_DIR: ${{ github.workspace }}/buildcache_dir
-      BUILDCACHE_ACCURACY: SLOPPY
 
     steps:
       - name: Checkout
@@ -27,11 +23,6 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Get Python executable path
-        shell: bash
-        id: python-path
-        run: echo "PYTHON_EXECUTABLE=$(python -c 'import sys; import pathlib; print(pathlib.PurePath(sys.executable).as_posix())')" >> $GITHUB_OUTPUT
-
       - name: Checkout taskekrabbe
         uses: actions/checkout@v6
         with:
@@ -43,74 +34,22 @@ jobs:
           python -m pip install --upgrade pip
           pip install rips pytest
           pip install ./taskekrabbe
-          pip install -r vendor/ResInsight/GrpcInterface/Python/build-requirements.txt
 
-      - name: Install Linux dependencies
+      - name: Install Linux runtime dependencies
         run: |
           sudo apt-get update --option="APT::Acquire::Retries=3"
           sudo apt-get install --option="APT::Acquire::Retries=3" -y \
-            libxkbcommon-x11-0 libgl1-mesa-dev mesa-common-dev \
-            libglfw3-dev libglu1-mesa-dev libhdf5-dev ninja-build
+            libxkbcommon-x11-0 libgl1 libglu1-mesa libglfw3
 
-      - name: Install gcc-14
+      - name: Download ResInsight nightly build
         run: |
-          sudo apt-get install --option="APT::Acquire::Retries=3" -y gcc-14 g++-14
-
-      - name: Setup buildcache
-        uses: CeetronSolutions/setup-buildcache-action@v1.1
-
-      - name: Get current date
-        id: current-time
-        shell: bash
-        run: echo "formattedTime=$(date -u +%Y-%m-%d)" >> $GITHUB_OUTPUT
-
-      - name: Cache Buildcache
-        uses: actions/cache@v5
-        with:
-          path: ${{ env.BUILDCACHE_DIR }}
-          key: ubuntu-gcc-14-cache-${{ steps.current-time.outputs.formattedTime }}
-
-      - name: Create Folder for buildcache
-        run: mkdir -p ${{ env.BUILDCACHE_DIR }}
-
-      - name: Bootstrap vcpkg
-        run: vendor/ResInsight/ThirdParty/vcpkg/bootstrap-vcpkg.sh
-
-      - name: Install Qt
-        uses: CeetronSolutions/install-qt-action@bump-node24
-        with:
-          version: 6.7.0
-          dir: "${{ github.workspace }}/Qt/"
-          cache: true
-          setup-python: false
-          modules: "qtnetworkauth"
-
-      - name: Configure ResInsight
-        shell: bash
-        env:
-          CC: gcc-14
-          CXX: g++-14
-        run: >
-          cmake -G Ninja
-          -S vendor/ResInsight
-          -B vendor/ResInsight/build
-          -DVCPKG_BUILD_TYPE=release
-          -DCMAKE_BUILD_TYPE=Release
-          -DRESINSIGHT_ENABLE_GRPC=ON
-          -DRESINSIGHT_GRPC_PYTHON_EXECUTABLE=${{ steps.python-path.outputs.PYTHON_EXECUTABLE }}
-          -DRESINSIGHT_GRPC_DOWNLOAD_PYTHON_MODULE=true
-          -DRESINSIGHT_ENABLE_HDF5=false
-          -DRESINSIGHT_INCLUDE_APPLICATION_UNIT_TESTS=false
-          -DCMAKE_TOOLCHAIN_FILE=ThirdParty/vcpkg/scripts/buildsystems/vcpkg.cmake
-
-      - name: Build ResInsight
-        run: ninja -C vendor/ResInsight/build
-
-      - name: Stats for buildcache
-        run: buildcache -s
+          curl -L -o ResInsight-nightly.zip \
+            "https://nightly.link/OPM/ResInsight/workflows/ResInsightWithCache/dev/ResInsight-Ubuntu%2024.04%20gcc.zip"
+          unzip -q ResInsight-nightly.zip -d resinsight-nightly
+          chmod +x resinsight-nightly/bin/ResInsight
 
       - name: Run tests
         env:
-          RESINSIGHT_EXECUTABLE: ${{ github.workspace }}/vendor/ResInsight/build/ResInsight
+          RESINSIGHT_EXECUTABLE: ${{ github.workspace }}/resinsight-nightly/bin/ResInsight
           PYTHONPATH: ${{ github.workspace }}
         run: pytest tests/ -v

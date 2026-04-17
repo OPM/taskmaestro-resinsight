@@ -48,6 +48,22 @@ jobs:
           unzip -q ResInsight-nightly.zip -d resinsight-nightly
           chmod +x resinsight-nightly/bin/ResInsight
 
+      - name: Diagnose ResInsight launch
+        run: |
+          echo "--- ldd ResInsight ---"
+          ldd resinsight-nightly/bin/ResInsight | head -40
+          echo "--- plugins/platforms ---"
+          ls resinsight-nightly/plugins/platforms/
+          echo "--- direct launch under xvfb-run (15s timeout) ---"
+          set +e
+          timeout 15 xvfb-run --auto-servernum \
+            resinsight-nightly/bin/ResInsight \
+              --console --server 0 \
+              --portnumberfile /tmp/port.txt
+          echo "exit=$?"
+          echo "--- port file ---"
+          cat /tmp/port.txt 2>&1 || echo "(no port file)"
+
       - name: Run tests
         env:
           RESINSIGHT_EXECUTABLE: ${{ github.workspace }}/resinsight-nightly/bin/ResInsight

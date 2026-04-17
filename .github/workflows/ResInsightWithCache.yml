@@ -39,7 +39,7 @@ jobs:
         run: |
           sudo apt-get update --option="APT::Acquire::Retries=3"
           sudo apt-get install --option="APT::Acquire::Retries=3" -y \
-            libxkbcommon-x11-0 libgl1 libglu1-mesa libglfw3
+            libxkbcommon-x11-0 libgl1 libglu1-mesa libglfw3 xvfb
 
       - name: Download ResInsight nightly build
         run: |
@@ -52,5 +52,4 @@ jobs:
         env:
           RESINSIGHT_EXECUTABLE: ${{ github.workspace }}/resinsight-nightly/bin/ResInsight
           PYTHONPATH: ${{ github.workspace }}
-          QT_QPA_PLATFORM: offscreen
-        run: pytest tests/ -v
+        run: xvfb-run --auto-servernum pytest tests/ -v

@@ -7,7 +7,10 @@ from taskmaestro import ExecutionContext
 
 from models import RipsInstance
 from tests.conftest import RESINSIGHT_EXECUTABLE
-from tasks.launch_resinsight import LaunchResInsight, LaunchResInsightInput
+from taskmaestro_resinsight.launch_resinsight import (
+    LaunchResInsight,
+    LaunchResInsightInput,
+)
 
 
 class TestLaunchResInsight:

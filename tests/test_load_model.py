@@ -7,7 +7,7 @@ import pytest
 from taskmaestro import ExecutionContext
 
 from models import GridCase, LoadModelInput, RipsInstance
-from tasks.load_model import LoadModel
+from taskmaestro_resinsight.load_model import LoadModel
 
 
 class TestLoadModel:

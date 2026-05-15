@@ -10,10 +10,10 @@ from models import (
     LoadWellPathInput,
     RipsInstance,
 )
-from tasks.add_perforation import AddPerforation
-from tasks.export_completions import ExportCompletions
-from tasks.load_model import LoadModel
-from tasks.load_well_path import LoadWellPath
+from taskmaestro_resinsight.add_perforation import AddPerforation
+from taskmaestro_resinsight.export_completions import ExportCompletions
+from taskmaestro_resinsight.load_model import LoadModel
+from taskmaestro_resinsight.load_well_path import LoadWellPath
 
 
 class TestExportCompletions:

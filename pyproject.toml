@@ -1,3 +1,7 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
 [project]
 name = "taskmaestro-resinsight"
 version = "0.1.0"
@@ -6,6 +10,9 @@ dependencies = [
     "taskmaestro==0.1.0",
     "rips",
 ]
+
+[tool.setuptools]
+packages = ["taskmaestro_resinsight"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

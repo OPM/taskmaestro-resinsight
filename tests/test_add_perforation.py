@@ -5,7 +5,7 @@ from __future__ import annotations
 from taskmaestro import ExecutionContext
 
 from models import AddPerforationInput, PerforationOutput, RipsInstance, WellPath
-from tasks.add_perforation import AddPerforation
+from taskmaestro_resinsight.add_perforation import AddPerforation
 
 
 class TestAddPerforation:

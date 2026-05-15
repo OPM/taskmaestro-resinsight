@@ -5,7 +5,7 @@ from __future__ import annotations
 from taskmaestro import ExecutionContext
 
 from models import GridCase, LoadWellPathInput, RipsInstance, WellPath
-from tasks.load_well_path import LoadWellPath
+from taskmaestro_resinsight.load_well_path import LoadWellPath
 
 
 class TestLoadWellPath:

@@ -5,7 +5,7 @@ from __future__ import annotations
 from taskmaestro import ExecutionContext
 
 from models import GridCase, GridView
-from tasks.create_grid_view import CreateGridView
+from taskmaestro_resinsight.create_grid_view import CreateGridView
 
 
 class TestCreateGridView:

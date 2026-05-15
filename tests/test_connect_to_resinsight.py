@@ -9,7 +9,7 @@ import rips
 from taskmaestro import EmptyConfig, ExecutionContext
 
 from models import RipsInstance
-from tasks.connect_to_resinsight import ConnectToResInsight
+from taskmaestro_resinsight.connect_to_resinsight import ConnectToResInsight
 
 
 class TestConnectToResInsight:

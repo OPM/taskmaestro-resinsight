@@ -8,7 +8,7 @@ from pathlib import Path
 import pytest
 import rips
 
-from taskekrabbe import ExecutionContext
+from taskmaestro import ExecutionContext
 
 from models import GridCase, RipsInstance, WellPath
 

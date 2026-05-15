@@ -6,7 +6,7 @@ import os
 
 import rips
 
-from taskekrabbe import EmptyConfig, ExecutionContext
+from taskmaestro import EmptyConfig, ExecutionContext
 
 from models import RipsInstance
 from tasks.connect_to_resinsight import ConnectToResInsight

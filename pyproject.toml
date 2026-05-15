@@ -1,9 +1,9 @@
 [project]
-name = "taskekrabbe-resinsight"
+name = "taskmaestro-resinsight"
 version = "0.1.0"
 requires-python = ">=3.12"
 dependencies = [
-    "taskekrabbe",
+    "taskmaestro==0.1.0",
     "rips",
 ]
 
@@ -11,4 +11,4 @@ dependencies = [
 testpaths = ["tests"]
 
 [tool.ruff]
-extend-exclude = ["vendor", "taskekrabbe"]
+extend-exclude = ["vendor"]

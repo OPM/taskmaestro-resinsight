@@ -5,7 +5,7 @@ from __future__ import annotations
 import rips
 from pydantic import BaseModel
 
-from taskekrabbe import ExecutionContext, Task
+from taskmaestro import ExecutionContext, Task
 
 from models import RipsInstance
 

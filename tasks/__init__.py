@@ -1,1 +1,1 @@
-"""ResInsight tasks for taskekrabbe workflows."""
+"""ResInsight tasks for taskmaestro workflows."""

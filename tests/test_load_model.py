@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import pytest
 
-from taskekrabbe import ExecutionContext
+from taskmaestro import ExecutionContext
 
 from models import GridCase, LoadModelInput, RipsInstance
 from tasks.load_model import LoadModel

@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import rips
 
-from taskekrabbe import ExecutionContext, Task
+from taskmaestro import ExecutionContext, Task
 
 from models import AddPerforationInput, PerforationOutput
 

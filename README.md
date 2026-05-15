@@ -1,2 +1,2 @@
-# taskekrabbe-resinsight
-taskekrabbe tasks and example workflows for ResInsight
+# taskmaestro-resinsight
+taskmaestro tasks and example workflows for ResInsight

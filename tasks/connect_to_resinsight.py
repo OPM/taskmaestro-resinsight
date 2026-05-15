@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import rips
 
-from taskekrabbe import EmptyConfig, ExecutionContext, Task
+from taskmaestro import EmptyConfig, ExecutionContext, Task
 
 from models import RipsInstance
 

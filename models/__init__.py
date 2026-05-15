@@ -5,7 +5,7 @@ from __future__ import annotations
 import rips
 from pydantic import BaseModel, ConfigDict
 
-from taskekrabbe import ObjectModel
+from taskmaestro import ObjectModel
 
 
 class RipsInstance(ObjectModel[rips.Instance]):

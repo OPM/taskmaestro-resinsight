@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from taskmaestro import ExecutionContext, Task
 
-from models import LoadWellPathInput, WellPath
+from .models import LoadWellPathInput, WellPath
 
 
 class LoadWellPath(Task[LoadWellPathInput, WellPath]):

@@ -11,8 +11,8 @@ dependencies = [
     "rips",
 ]
 
-[tool.setuptools]
-packages = ["taskmaestro_resinsight"]
+[tool.setuptools.packages.find]
+include = ["taskmaestro_resinsight*"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

@@ -6,7 +6,7 @@ import rips
 
 from taskmaestro import ExecutionContext, Task
 
-from models import AddPerforationInput, PerforationOutput
+from .models import AddPerforationInput, PerforationOutput
 
 
 class AddPerforation(Task[AddPerforationInput, PerforationOutput]):

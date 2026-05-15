@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from taskmaestro import ExecutionContext
 
-from models import (
+from taskmaestro_resinsight.models import (
     AddPerforationInput,
     LoadModelInput,
     LoadWellPathInput,

@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from taskmaestro import ExecutionContext, Task
 
-from models import GridCase, LoadModelInput
+from .models import GridCase, LoadModelInput
 
 
 class LoadModel(Task[LoadModelInput, GridCase]):

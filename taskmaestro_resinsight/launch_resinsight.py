@@ -7,7 +7,7 @@ from pydantic import BaseModel
 
 from taskmaestro import ExecutionContext, Task
 
-from models import RipsInstance
+from .models import RipsInstance
 
 
 class LaunchResInsightInput(BaseModel):

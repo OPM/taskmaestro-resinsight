@@ -10,7 +10,7 @@ import rips
 
 from taskmaestro import ExecutionContext
 
-from models import GridCase, RipsInstance, WellPath
+from taskmaestro_resinsight.models import GridCase, RipsInstance, WellPath
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 TESTMODELS_DIR = REPO_ROOT / "vendor" / "ResInsight" / "TestModels"

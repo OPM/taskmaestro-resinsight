@@ -6,7 +6,7 @@ import rips
 
 from taskmaestro import EmptyConfig, ExecutionContext, Task
 
-from models import RipsInstance
+from .models import RipsInstance
 
 
 class ConnectToResInsight(Task[EmptyConfig, RipsInstance]):

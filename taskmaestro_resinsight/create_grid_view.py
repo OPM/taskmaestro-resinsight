@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from taskmaestro import ExecutionContext, Task
 
-from models import GridCase, GridView
+from .models import GridCase, GridView
 
 
 class CreateGridView(Task[GridCase, GridView]):

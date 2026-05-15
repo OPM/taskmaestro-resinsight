@@ -57,7 +57,7 @@ jobs:
         run: >
           xvfb-run --auto-servernum
           pytest tests/ -v
-          --cov=taskmaestro_resinsight --cov=models
+          --cov=taskmaestro_resinsight
           --cov-report=term
           --cov-report=xml
 

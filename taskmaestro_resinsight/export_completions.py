@@ -7,7 +7,7 @@ from pydantic import BaseModel, ConfigDict
 
 from taskmaestro import ExecutionContext, Task
 
-from models import GridCase, PerforationOutput, RipsInstance
+from .models import GridCase, PerforationOutput, RipsInstance
 
 
 class ExportCompletions(Task):  # type: ignore[type-arg]

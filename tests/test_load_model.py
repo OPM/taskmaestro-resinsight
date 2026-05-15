@@ -6,7 +6,7 @@ import pytest
 
 from taskmaestro import ExecutionContext
 
-from models import GridCase, LoadModelInput, RipsInstance
+from taskmaestro_resinsight.models import GridCase, LoadModelInput, RipsInstance
 from taskmaestro_resinsight.load_model import LoadModel
 
 

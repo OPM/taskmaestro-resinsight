@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from taskmaestro import ExecutionContext
 
-from models import GridCase, GridView
+from taskmaestro_resinsight.models import GridCase, GridView
 from taskmaestro_resinsight.create_grid_view import CreateGridView
 
 

@@ -5,7 +5,7 @@ from __future__ import annotations
 
 from taskmaestro import ExecutionContext
 
-from models import RipsInstance
+from taskmaestro_resinsight.models import RipsInstance
 from tests.conftest import RESINSIGHT_EXECUTABLE
 from taskmaestro_resinsight.launch_resinsight import (
     LaunchResInsight,

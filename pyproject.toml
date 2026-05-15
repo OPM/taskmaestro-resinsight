@@ -11,4 +11,4 @@ dependencies = [
 testpaths = ["tests"]
 
 [tool.ruff]
-extend-exclude = ["vendor"]
+extend-exclude = ["vendor", "taskekrabbe"]

@@ -3,6 +3,8 @@
 from __future__ import annotations
 
 import datetime
+import pathlib
+
 import rips
 from pydantic import BaseModel, ConfigDict, Field
 
@@ -28,7 +30,9 @@ class ExportCompletions(Task):  # type: ignore[type-arg]
         perforation_1: PerforationOutput
         perforation_2: PerforationOutput
         event_date: datetime.date = Field(description="Perforation event date")
-        export_path: str
+        export_path: pathlib.Path = Field(
+            description="Path to write the completions file"
+        )
 
     class Outputs(BaseModel):
         export_file: str
@@ -56,10 +60,10 @@ class ExportCompletions(Task):  # type: ignore[type-arg]
             well_path_names=well_path_names,
             file_split="UNIFIED_FILE",
             include_perforations=True,
-            custom_file_name=input.export_path,
+            custom_file_name=str(input.export_path),
         )
         ctx.logger.info("Export complete: %s", input.export_path)
         return self.Outputs(
-            export_file=input.export_path,
+            export_file=str(input.export_path),
             well_path_names=well_path_names,
         )

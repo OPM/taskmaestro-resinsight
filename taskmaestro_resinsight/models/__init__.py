@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 import rips
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel, ConfigDict, Field
 
 from taskmaestro import ObjectModel
 
@@ -31,22 +31,22 @@ class WellPath(ObjectModel[rips.WellPath]):
 
 
 class LoadModelInput(BaseModel):
-    """Input for LoadModel: RipsInstance from upstream, file path from config."""
+    """Input for LoadModel: RipsInstance from upstream, case selected via config."""
 
     model_config = ConfigDict(arbitrary_types_allowed=True)
 
     resinsight: RipsInstance
-    path: str
+    case: GridCase = Field(description="Case to use")
 
 
 class LoadWellPathInput(BaseModel):
-    """Input for LoadWellPath: RipsInstance from upstream, file path from config."""
+    """Input for LoadWellPath: RipsInstance from upstream, well path selected via config."""
 
     model_config = ConfigDict(arbitrary_types_allowed=True)
 
     resinsight: RipsInstance
     grid_case: GridCase
-    path: str
+    well_path: WellPath = Field(description="Well path to use")
 
 
 class AddPerforationInput(BaseModel):

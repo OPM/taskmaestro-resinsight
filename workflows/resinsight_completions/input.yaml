@@ -1,14 +1,13 @@
 # Per-task input data for the ResInsight Completions Pipeline
 #
 # Each top-level key is a task name, with its configuration values.
+# `case` (load_model) and `well_path` (load_well_path_*) are runtime-picker
+# fields supplied by the caller — not literal values here.
 
 connect_to_resinsight: {}
-load_model:
-  path: "/home/resinsight/norne/NORNE.EGRID"
-load_well_path_1:
-  path: "/home/resinsight/testdata/projects/ResInsight-regression-test/ModelData/Norne_WellPaths/B-2H.json"
-load_well_path_2:
-  path: "/home/resinsight/testdata/projects/ResInsight-regression-test/ModelData/Norne_WellPaths/C-4H.json"
+load_model: {}
+load_well_path_1: {}
+load_well_path_2: {}
 add_perf_1:
   event_date: "2024-01-01"
   start_md: 3000.0

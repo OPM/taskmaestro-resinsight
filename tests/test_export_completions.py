@@ -6,9 +6,11 @@ from taskmaestro import ExecutionContext
 
 from taskmaestro_resinsight.models import (
     AddPerforationInput,
+    GridCase,
     LoadModelInput,
     LoadWellPathInput,
     RipsInstance,
+    WellPath,
 )
 from taskmaestro_resinsight.add_perforation import AddPerforation
 from taskmaestro_resinsight.export_completions import ExportCompletions
@@ -29,18 +31,23 @@ class TestExportCompletions:
         well_path_b: str,
         tmp_path: object,
     ) -> None:
-        # Load model
+        # Pre-load case and well paths via rips; LoadModel / LoadWellPath
+        # are pass-throughs that simply propagate them downstream.
+        instance = rips_instance_model.value
+        case_in = GridCase(value=instance.project.load_case(egrid_path))
+        collection = instance.project.well_path_collection()
+        wp_a_in = WellPath(value=collection.import_well_path(file_name=well_path_a))
+        wp_b_in = WellPath(value=collection.import_well_path(file_name=well_path_b))
+
         grid_case = LoadModel().run(
-            LoadModelInput(resinsight=rips_instance_model, path=egrid_path),
+            LoadModelInput(resinsight=rips_instance_model, case=case_in),
             ctx,
         )
-
-        # Load two well paths
         wp1 = LoadWellPath().run(
             LoadWellPathInput(
                 resinsight=rips_instance_model,
                 grid_case=grid_case,
-                path=well_path_a,
+                well_path=wp_a_in,
             ),
             ctx,
         )
@@ -48,7 +55,7 @@ class TestExportCompletions:
             LoadWellPathInput(
                 resinsight=rips_instance_model,
                 grid_case=grid_case,
-                path=well_path_b,
+                well_path=wp_b_in,
             ),
             ctx,
         )

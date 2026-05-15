@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import rips
+import datetime
 from pydantic import BaseModel, ConfigDict, Field
 
 from taskmaestro import ObjectModel
@@ -56,7 +57,7 @@ class AddPerforationInput(BaseModel):
 
     resinsight: RipsInstance
     well_path: WellPath
-    event_date: str
+    event_date: datetime.date = Field(description="Perforation event date")
     start_md: float
     end_md: float
 

@@ -2,8 +2,9 @@
 
 from __future__ import annotations
 
+import datetime
 import rips
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel, ConfigDict, Field
 
 from taskmaestro import ExecutionContext, Task
 
@@ -26,7 +27,7 @@ class ExportCompletions(Task):  # type: ignore[type-arg]
         grid_case: GridCase
         perforation_1: PerforationOutput
         perforation_2: PerforationOutput
-        event_date: str
+        event_date: datetime.date = Field(description="Perforation event date")
         export_path: str
 
     class Outputs(BaseModel):

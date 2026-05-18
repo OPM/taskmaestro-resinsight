@@ -31,7 +31,7 @@ After `pip install -e .` the `taskmaestro_resinsight` package resolves from the
 venv, so no `PYTHONPATH` tricks are needed. To verify:
 
 ```bash
-cd /tmp && python -c "from taskmaestro_resinsight.load_model import LoadModel; print(LoadModel)"
+cd /tmp && python -c "from taskmaestro_resinsight.select_eclipse_case import SelectEclipseCase; print(SelectEclipseCase)"
 ```
 
 ## Running tests

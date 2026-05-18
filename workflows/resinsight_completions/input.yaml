@@ -1,13 +1,13 @@
 # Per-task input data for the ResInsight Completions Pipeline
 #
 # Each top-level key is a task name, with its configuration values.
-# `case` (load_model) and `well_path` (load_well_path_*) are runtime-picker
-# fields supplied by the caller — not literal values here.
+# `case` (select_eclipse_case) and `well_path` (select_well_path_*) are
+# runtime-picker fields supplied by the caller — not literal values here.
 
 connect_to_resinsight: {}
-load_model: {}
-load_well_path_1: {}
-load_well_path_2: {}
+select_eclipse_case: {}
+select_well_path_1: {}
+select_well_path_2: {}
 add_perf_1:
   event_date: "2024-01-01"
   start_md: 3000.0

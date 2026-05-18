@@ -7,15 +7,15 @@ from taskmaestro import ExecutionContext
 from taskmaestro_resinsight.models import (
     AddPerforationInput,
     GridCase,
-    LoadModelInput,
-    LoadWellPathInput,
     RipsInstance,
+    SelectEclipseCaseInput,
+    SelectWellPathInput,
     WellPath,
 )
 from taskmaestro_resinsight.add_perforation import AddPerforation
 from taskmaestro_resinsight.export_completions import ExportCompletions
-from taskmaestro_resinsight.load_model import LoadModel
-from taskmaestro_resinsight.load_well_path import LoadWellPath
+from taskmaestro_resinsight.select_eclipse_case import SelectEclipseCase
+from taskmaestro_resinsight.select_well_path import SelectWellPath
 
 
 class TestExportCompletions:
@@ -31,28 +31,28 @@ class TestExportCompletions:
         well_path_b: str,
         tmp_path: object,
     ) -> None:
-        # Pre-load case and well paths via rips; LoadModel / LoadWellPath
-        # are pass-throughs that simply propagate them downstream.
+        # Pre-load case and well paths via rips; SelectEclipseCase /
+        # SelectWellPath are pass-throughs that simply propagate them downstream.
         instance = rips_instance_model.value
         case_in = GridCase(value=instance.project.load_case(egrid_path))
         collection = instance.project.well_path_collection()
         wp_a_in = WellPath(value=collection.import_well_path(file_name=well_path_a))
         wp_b_in = WellPath(value=collection.import_well_path(file_name=well_path_b))
 
-        grid_case = LoadModel().run(
-            LoadModelInput(resinsight=rips_instance_model, case=case_in),
+        grid_case = SelectEclipseCase().run(
+            SelectEclipseCaseInput(resinsight=rips_instance_model, case=case_in),
             ctx,
         )
-        wp1 = LoadWellPath().run(
-            LoadWellPathInput(
+        wp1 = SelectWellPath().run(
+            SelectWellPathInput(
                 resinsight=rips_instance_model,
                 grid_case=grid_case,
                 well_path=wp_a_in,
             ),
             ctx,
         )
-        wp2 = LoadWellPath().run(
-            LoadWellPathInput(
+        wp2 = SelectWellPath().run(
+            SelectWellPathInput(
                 resinsight=rips_instance_model,
                 grid_case=grid_case,
                 well_path=wp_b_in,

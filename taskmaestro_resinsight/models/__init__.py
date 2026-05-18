@@ -31,8 +31,8 @@ class WellPath(ObjectModel[rips.WellPath]):
     """Imported well trajectory."""
 
 
-class LoadModelInput(BaseModel):
-    """Input for LoadModel: RipsInstance from upstream, case selected via config."""
+class SelectEclipseCaseInput(BaseModel):
+    """Input for SelectEclipseCase: RipsInstance from upstream, case selected via config."""
 
     model_config = ConfigDict(arbitrary_types_allowed=True)
 
@@ -40,14 +40,33 @@ class LoadModelInput(BaseModel):
     case: GridCase = Field(description="Case to use")
 
 
-class LoadWellPathInput(BaseModel):
-    """Input for LoadWellPath: RipsInstance from upstream, well path selected via config."""
+class SelectWellPathInput(BaseModel):
+    """Input for SelectWellPath: RipsInstance from upstream, well path selected via config."""
 
     model_config = ConfigDict(arbitrary_types_allowed=True)
 
     resinsight: RipsInstance
     grid_case: GridCase
     well_path: WellPath = Field(description="Well path to use")
+
+
+class LoadModelInput(BaseModel):
+    """Input for LoadModel: RipsInstance from upstream, path from config."""
+
+    model_config = ConfigDict(arbitrary_types_allowed=True)
+
+    resinsight: RipsInstance
+    path: str = Field(description="Path to the .EGRID file to load")
+
+
+class LoadWellPathInput(BaseModel):
+    """Input for LoadWellPath: RipsInstance + grid_case from upstream, path from config."""
+
+    model_config = ConfigDict(arbitrary_types_allowed=True)
+
+    resinsight: RipsInstance
+    grid_case: GridCase
+    path: str = Field(description="Path to the .dev well-trajectory file to load")
 
 
 class AddPerforationInput(BaseModel):

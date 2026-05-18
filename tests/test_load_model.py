@@ -1,4 +1,4 @@
-"""Tests for LoadModel task."""
+"""Tests for LoadModel task (loads an Eclipse case from disk)."""
 
 from __future__ import annotations
 
@@ -12,17 +12,19 @@ class TestLoadModel:
     def test_name(self) -> None:
         assert LoadModel.name == "load_model"
 
-    def test_run_returns_input_case(
+    def test_run_loads_case_from_path(
         self,
         ctx: ExecutionContext,
         rips_instance_model: RipsInstance,
-        loaded_grid_case: GridCase,
+        egrid_path: str,
     ) -> None:
         task = LoadModel()
         input_data = LoadModelInput(
             resinsight=rips_instance_model,
-            case=loaded_grid_case,
+            path=egrid_path,
         )
         result = task.run(input_data, ctx)
 
-        assert result is loaded_grid_case
+        assert isinstance(result, GridCase)
+        assert result.value is not None
+        assert result.value.name

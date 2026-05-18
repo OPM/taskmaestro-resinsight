@@ -1,44 +1,44 @@
 # ResInsight Completions Pipeline — YAML workflow configuration
 #
 # DAG with fan-out / fan-in pattern:
-#   ConnectToResInsight → LoadModel → [LoadWellPath x2] → [AddPerforation x2] → ExportCompletions
+#   ConnectToResInsight → SelectEclipseCase → [SelectWellPath x2] → [AddPerforation x2] → ExportCompletions
 
 workflow:
   name: resinsight_completions
   tasks:
     - task: taskmaestro_resinsight.connect_to_resinsight.ConnectToResInsight
-    - task: taskmaestro_resinsight.load_model.LoadModel
+    - task: taskmaestro_resinsight.select_eclipse_case.SelectEclipseCase
       depends_on:
         resinsight: taskmaestro_resinsight.connect_to_resinsight.ConnectToResInsight
       config_fields: [case]
-    - task: taskmaestro_resinsight.load_well_path.LoadWellPath
-      name: load_well_path_1
+    - task: taskmaestro_resinsight.select_well_path.SelectWellPath
+      name: select_well_path_1
       depends_on:
         resinsight: taskmaestro_resinsight.connect_to_resinsight.ConnectToResInsight
-        grid_case: taskmaestro_resinsight.load_model.LoadModel
+        grid_case: taskmaestro_resinsight.select_eclipse_case.SelectEclipseCase
       config_fields: [well_path]
-    - task: taskmaestro_resinsight.load_well_path.LoadWellPath
-      name: load_well_path_2
+    - task: taskmaestro_resinsight.select_well_path.SelectWellPath
+      name: select_well_path_2
       depends_on:
         resinsight: taskmaestro_resinsight.connect_to_resinsight.ConnectToResInsight
-        grid_case: taskmaestro_resinsight.load_model.LoadModel
+        grid_case: taskmaestro_resinsight.select_eclipse_case.SelectEclipseCase
       config_fields: [well_path]
     - task: taskmaestro_resinsight.add_perforation.AddPerforation
       name: add_perf_1
       depends_on:
         resinsight: taskmaestro_resinsight.connect_to_resinsight.ConnectToResInsight
-        well_path: load_well_path_1
+        well_path: select_well_path_1
       config_fields: [event_date, start_md, end_md]
     - task: taskmaestro_resinsight.add_perforation.AddPerforation
       name: add_perf_2
       depends_on:
         resinsight: taskmaestro_resinsight.connect_to_resinsight.ConnectToResInsight
-        well_path: load_well_path_2
+        well_path: select_well_path_2
       config_fields: [event_date, start_md, end_md]
     - task: taskmaestro_resinsight.export_completions.ExportCompletions
       depends_on:
         resinsight: taskmaestro_resinsight.connect_to_resinsight.ConnectToResInsight
-        grid_case: taskmaestro_resinsight.load_model.LoadModel
+        grid_case: taskmaestro_resinsight.select_eclipse_case.SelectEclipseCase
         perforation_1: add_perf_1
         perforation_2: add_perf_2
       config_fields: [event_date, export_path]

@@ -1,4 +1,4 @@
-"""Tests for LoadWellPath task."""
+"""Tests for LoadWellPath task (imports a well path from disk)."""
 
 from __future__ import annotations
 
@@ -17,19 +17,21 @@ class TestLoadWellPath:
     def test_name(self) -> None:
         assert LoadWellPath.name == "load_well_path"
 
-    def test_run_returns_input_well_path(
+    def test_run_imports_well_path_from_path(
         self,
         ctx: ExecutionContext,
         rips_instance_model: RipsInstance,
         loaded_grid_case: GridCase,
-        loaded_well_path: WellPath,
+        well_path_a: str,
     ) -> None:
         task = LoadWellPath()
         input_data = LoadWellPathInput(
             resinsight=rips_instance_model,
             grid_case=loaded_grid_case,
-            well_path=loaded_well_path,
+            path=well_path_a,
         )
         result = task.run(input_data, ctx)
 
-        assert result is loaded_well_path
+        assert isinstance(result, WellPath)
+        assert result.value is not None
+        assert result.value.name

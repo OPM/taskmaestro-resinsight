@@ -7,9 +7,23 @@ name = "taskmaestro-resinsight"
 version = "0.1.0"
 requires-python = ">=3.12"
 dependencies = [
-    "taskmaestro==0.1.0",
+    "taskmaestro>=0.2.0,<0.3.0",
     "rips",
 ]
+
+[project.entry-points."taskmaestro.tasks"]
+"resinsight.add_perforation" = "taskmaestro_resinsight.add_perforation:AddPerforation"
+"resinsight.connect" = "taskmaestro_resinsight.connect_to_resinsight:ConnectToResInsight"
+"resinsight.create_grid_view" = "taskmaestro_resinsight.create_grid_view:CreateGridView"
+"resinsight.export_completions" = "taskmaestro_resinsight.export_completions:ExportCompletions"
+"resinsight.launch" = "taskmaestro_resinsight.launch_resinsight:LaunchResInsight"
+"resinsight.load_model" = "taskmaestro_resinsight.load_model:LoadModel"
+"resinsight.load_well_path" = "taskmaestro_resinsight.load_well_path:LoadWellPath"
+"resinsight.select_eclipse_case" = "taskmaestro_resinsight.select_eclipse_case:SelectEclipseCase"
+"resinsight.select_well_path" = "taskmaestro_resinsight.select_well_path:SelectWellPath"
+
+[project.entry-points."taskmaestro.workflows"]
+"resinsight.completions" = "taskmaestro_resinsight.workflows:resinsight_completions"
 
 [tool.setuptools.packages.find]
 include = ["taskmaestro_resinsight*"]

@@ -25,24 +25,46 @@ cd ~/src/taskmaestro-resinsight
 pip install -e ".[dev]"
 ```
 
-## Exposing workflows to ResInsight
+## Discovering tasks and workflows
 
-ResInsight discovers workflows under `~/.taskmaestro/workflows/<name>/workflow.yaml`.
-Symlink each workflow directory in once:
+Installing the package registers its tasks and completions workflow through the
+`taskmaestro.tasks` and `taskmaestro.workflows` entry-point groups. No source-tree scan,
+`PYTHONPATH` change, or workflow-directory symlink is needed:
 
-```bash
-mkdir -p ~/.taskmaestro/workflows
-for d in workflows/*/; do
-    ln -sfn "$(realpath "$d")" ~/.taskmaestro/workflows/"$(basename "$d")"
-done
+```python
+from taskmaestro import (
+    get_registered_workflow,
+    registered_task_names,
+    registered_workflow_names,
+)
+
+print(
+    sorted(name for name in registered_task_names() if name.startswith("resinsight."))
+)
+# ['resinsight.add_perforation', 'resinsight.connect', ...]
+
+print(registered_workflow_names())
+# {'resinsight.completions'}
+
+workflow = get_registered_workflow("resinsight.completions")
+print(workflow.to_mermaid())
 ```
 
-After `pip install -e .` the `taskmaestro_resinsight` package resolves from the
-venv, so no `PYTHONPATH` tricks are needed. To verify:
+The example in `workflows/resinsight_completions/workflow.yaml` also uses entry-point
+identifiers such as `resinsight.connect` in its `task:` and `depends_on:` fields. It can
+be loaded normally after installation:
 
-```bash
-cd /tmp && python -c "from taskmaestro_resinsight.select_eclipse_case import SelectEclipseCase; print(SelectEclipseCase)"
+```python
+from taskmaestro import load_workflow_from_yaml
+
+loaded = load_workflow_from_yaml(
+    "workflows/resinsight_completions/workflow.yaml",
+    "workflows/resinsight_completions/input.yaml",
+)
 ```
+
+Applications can use `registered_workflows()` as their workflow catalogue and avoid the
+old convention of scanning `~/.taskmaestro/workflows`.
 
 ## Running tests
 

@@ -4,13 +4,13 @@ from __future__ import annotations
 
 from taskmaestro import ExecutionContext
 
+from taskmaestro_resinsight.add_perforation import AddPerforation
 from taskmaestro_resinsight.models import (
     AddPerforationInput,
     PerforationOutput,
     RipsInstance,
     WellPath,
 )
-from taskmaestro_resinsight.add_perforation import AddPerforation
 
 
 class TestAddPerforation:

@@ -4,8 +4,8 @@ from __future__ import annotations
 
 from taskmaestro import ExecutionContext
 
-from taskmaestro_resinsight.models import GridCase, LoadModelInput, RipsInstance
 from taskmaestro_resinsight.load_model import LoadModel
+from taskmaestro_resinsight.models import GridCase, LoadModelInput, RipsInstance
 
 
 class TestLoadModel:

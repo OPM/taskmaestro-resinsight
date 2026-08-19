@@ -11,6 +11,13 @@ dependencies = [
     "rips",
 ]
 
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0",
+    "pytest-cov>=5.0",
+    "ruff>=0.16",
+]
+
 [project.entry-points."taskmaestro.tasks"]
 "resinsight.add_perforation" = "taskmaestro_resinsight.add_perforation:AddPerforation"
 "resinsight.connect" = "taskmaestro_resinsight.connect_to_resinsight:ConnectToResInsight"

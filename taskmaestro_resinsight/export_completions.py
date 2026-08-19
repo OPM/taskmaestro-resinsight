@@ -7,7 +7,6 @@ import pathlib
 
 import rips
 from pydantic import BaseModel, ConfigDict, Field
-
 from taskmaestro import ExecutionContext, Task
 
 from .models import GridCase, PerforationOutput, RipsInstance

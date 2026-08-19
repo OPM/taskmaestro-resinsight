@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 import rips
-
 from taskmaestro import ExecutionContext, Task
 
 from .models import AddPerforationInput, PerforationOutput

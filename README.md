@@ -11,8 +11,8 @@ cd ~/src/taskmaestro-resinsight
 # rips is not on PyPI; install from a local ResInsight checkout
 pip install -e /path/to/resinsight/GrpcInterface/Python
 
-# install this repo (tasks become importable as taskmaestro_resinsight.*)
-pip install -e .
+# install this repo and its test/lint tools (including Ruff 0.16+)
+pip install -e ".[dev]"
 ```
 
 ## Discovering tasks and workflows
@@ -28,7 +28,9 @@ from taskmaestro import (
     registered_workflow_names,
 )
 
-print(sorted(name for name in registered_task_names() if name.startswith("resinsight.")))
+print(
+    sorted(name for name in registered_task_names() if name.startswith("resinsight."))
+)
 # ['resinsight.add_perforation', 'resinsight.connect', ...]
 
 print(registered_workflow_names())

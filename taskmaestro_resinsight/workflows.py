@@ -34,13 +34,19 @@ resinsight_completions = (
     .add_task(
         AddPerforation,
         name="add_perf_1",
-        depends_on={"resinsight": ConnectToResInsight, "well_path": "select_well_path_1"},
+        depends_on={
+            "resinsight": ConnectToResInsight,
+            "well_path": "select_well_path_1",
+        },
         config_fields=["event_date", "start_md", "end_md"],
     )
     .add_task(
         AddPerforation,
         name="add_perf_2",
-        depends_on={"resinsight": ConnectToResInsight, "well_path": "select_well_path_2"},
+        depends_on={
+            "resinsight": ConnectToResInsight,
+            "well_path": "select_well_path_2",
+        },
         config_fields=["event_date", "start_md", "end_md"],
     )
     .add_task(

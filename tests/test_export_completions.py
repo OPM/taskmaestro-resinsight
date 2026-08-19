@@ -4,6 +4,8 @@ from __future__ import annotations
 
 from taskmaestro import ExecutionContext
 
+from taskmaestro_resinsight.add_perforation import AddPerforation
+from taskmaestro_resinsight.export_completions import ExportCompletions
 from taskmaestro_resinsight.models import (
     AddPerforationInput,
     GridCase,
@@ -12,8 +14,6 @@ from taskmaestro_resinsight.models import (
     SelectWellPathInput,
     WellPath,
 )
-from taskmaestro_resinsight.add_perforation import AddPerforation
-from taskmaestro_resinsight.export_completions import ExportCompletions
 from taskmaestro_resinsight.select_eclipse_case import SelectEclipseCase
 from taskmaestro_resinsight.select_well_path import SelectWellPath
 

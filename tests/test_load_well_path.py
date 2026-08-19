@@ -4,13 +4,13 @@ from __future__ import annotations
 
 from taskmaestro import ExecutionContext
 
+from taskmaestro_resinsight.load_well_path import LoadWellPath
 from taskmaestro_resinsight.models import (
     GridCase,
     LoadWellPathInput,
     RipsInstance,
     WellPath,
 )
-from taskmaestro_resinsight.load_well_path import LoadWellPath
 
 
 class TestLoadWellPath:

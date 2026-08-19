@@ -7,7 +7,6 @@ from pathlib import Path
 
 import pytest
 import rips
-
 from taskmaestro import ExecutionContext
 
 from taskmaestro_resinsight.models import GridCase, RipsInstance, WellPath

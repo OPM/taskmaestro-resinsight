@@ -5,11 +5,10 @@ from __future__ import annotations
 import os
 
 import rips
-
 from taskmaestro import EmptyConfig, ExecutionContext
 
-from taskmaestro_resinsight.models import RipsInstance
 from taskmaestro_resinsight.connect_to_resinsight import ConnectToResInsight
+from taskmaestro_resinsight.models import RipsInstance
 
 
 class TestConnectToResInsight:

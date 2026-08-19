@@ -4,7 +4,6 @@ from __future__ import annotations
 
 import rips
 from pydantic import BaseModel
-
 from taskmaestro import ExecutionContext, Task
 
 from .models import RipsInstance

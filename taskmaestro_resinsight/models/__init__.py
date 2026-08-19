@@ -2,10 +2,10 @@
 
 from __future__ import annotations
 
-import rips
 import datetime
-from pydantic import BaseModel, ConfigDict, Field
 
+import rips
+from pydantic import BaseModel, ConfigDict, Field
 from taskmaestro import ObjectModel
 
 

@@ -11,8 +11,8 @@ cd ~/src/taskmaestro-resinsight
 # rips is not on PyPI; install from a local ResInsight checkout
 pip install -e /path/to/resinsight/GrpcInterface/Python
 
-# install this repo (tasks become importable as taskmaestro_resinsight.*)
-pip install -e .
+# install this repo and its test/lint tools (including Ruff 0.16+)
+pip install -e ".[dev]"
 ```
 
 ## Exposing workflows to ResInsight

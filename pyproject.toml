@@ -1,11 +1,28 @@
 [build-system]
-requires = ["setuptools>=68"]
-build-backend = "setuptools.build_meta"
+requires = ["hatchling"]
+build-backend = "hatchling.build"
 
 [project]
 name = "taskmaestro-resinsight"
 version = "0.1.0"
+description = "ResInsight tasks and example workflows for taskmaestro"
+readme = "README.md"
 requires-python = ">=3.12"
+license = "GPL-3.0-or-later"
+license-files = ["LICENSE"]
+authors = [{ name = "Ceetron Solutions", email = "info@ceetronsolutions.com" }]
+keywords = ["workflow", "dag", "pipeline", "taskmaestro", "resinsight", "reservoir"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Scientific/Engineering",
+    "Typing :: Typed",
+]
 dependencies = [
     "taskmaestro==0.1.0",
     "rips",
@@ -18,8 +35,19 @@ dev = [
     "ruff>=0.16",
 ]
 
-[tool.setuptools.packages.find]
-include = ["taskmaestro_resinsight*"]
+[project.urls]
+Homepage = "https://github.com/OPM/taskmaestro-resinsight"
+Repository = "https://github.com/OPM/taskmaestro-resinsight"
+Issues = "https://github.com/OPM/taskmaestro-resinsight/issues"
+
+[tool.hatch.build.targets.sdist]
+exclude = [
+    "vendor",
+    "scripts",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["taskmaestro_resinsight"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

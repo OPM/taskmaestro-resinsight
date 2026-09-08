@@ -2,14 +2,24 @@
 
 taskmaestro tasks and example workflows for ResInsight.
 
-## Setup
+## Installation
 
 ```bash
-git clone https://github.com/kriben/taskmaestro-resinsight ~/src/taskmaestro-resinsight
-cd ~/src/taskmaestro-resinsight
+pip install taskmaestro-resinsight
+```
 
-# rips is not on PyPI; install from a local ResInsight checkout
+`rips` must match the ResInsight build it talks to. To use the API from a local
+ResInsight checkout instead of the released one on PyPI:
+
+```bash
 pip install -e /path/to/resinsight/GrpcInterface/Python
+```
+
+## Development setup
+
+```bash
+git clone https://github.com/OPM/taskmaestro-resinsight ~/src/taskmaestro-resinsight
+cd ~/src/taskmaestro-resinsight
 
 # install this repo and its test/lint tools (including Ruff 0.16+)
 pip install -e ".[dev]"

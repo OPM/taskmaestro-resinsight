@@ -12,6 +12,7 @@ from taskmaestro_resinsight.add_perforation import AddPerforation
 from taskmaestro_resinsight.connect_to_resinsight import ConnectToResInsight
 from taskmaestro_resinsight.create_grid_view import CreateGridView
 from taskmaestro_resinsight.export_completions import ExportCompletions
+from taskmaestro_resinsight.import_grid_property import ImportGridProperty
 from taskmaestro_resinsight.launch_resinsight import LaunchResInsight
 from taskmaestro_resinsight.load_model import LoadModel
 from taskmaestro_resinsight.load_well_path import LoadWellPath
@@ -25,6 +26,7 @@ EXPECTED_TASKS = {
     "resinsight.create_grid_view": CreateGridView,
     "resinsight.export_completions": ExportCompletions,
     "resinsight.launch": LaunchResInsight,
+    "resinsight.import_grid_property": ImportGridProperty,
     "resinsight.load_model": LoadModel,
     "resinsight.load_well_path": LoadWellPath,
     "resinsight.select_eclipse_case": SelectEclipseCase,

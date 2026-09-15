@@ -68,6 +68,23 @@ def roff_property_path() -> str:
 
 
 @pytest.fixture
+def regular_surface_path() -> str:
+    """Path to a regular surface test model."""
+    path = (
+        REPO_ROOT
+        / "vendor"
+        / "ResInsight"
+        / "ApplicationLibCode"
+        / "UnitTests"
+        / "TestData"
+        / "RifSurfaceImporter"
+        / "volantis.irap"
+    )
+    assert path.exists(), f"Test data not found: {path}"
+    return str(path)
+
+
+@pytest.fixture
 def well_path_a() -> str:
     """Path to wellpath_a.dev test file."""
     path = TEST10K_DIR / "wellpath_a.dev"

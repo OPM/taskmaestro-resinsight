@@ -23,6 +23,10 @@ class GridCase(ObjectModel[rips.Reservoir]):
     """Loaded Eclipse reservoir grid case."""
 
 
+class RegularSurface(ObjectModel[rips.Surface]):
+    """Loaded regular surface file."""
+
+
 class GridView(ObjectModel[rips.View]):
     """Grid view on a loaded Eclipse case."""
 
@@ -67,6 +71,15 @@ class LoadWellPathInput(BaseModel):
     resinsight: RipsInstance
     grid_case: GridCase
     path: str = Field(description="Path to the .dev well-trajectory file to load")
+
+
+class LoadRegularSurfaceInput(BaseModel):
+    """Input for LoadRegularSurface: RipsInstance + path from config."""
+
+    model_config = ConfigDict(arbitrary_types_allowed=True)
+
+    resinsight: RipsInstance
+    path: str = Field(description="Path to the regular surface file to load")
 
 
 class ImportGridPropertyInput(BaseModel):

@@ -19,7 +19,7 @@ class FilePath(BaseModel):
     path: str
 
 
-class GridCase(ObjectModel[rips.EclipseCase]):
+class GridCase(ObjectModel[rips.Reservoir]):
     """Loaded Eclipse reservoir grid case."""
 
 
@@ -67,6 +67,16 @@ class LoadWellPathInput(BaseModel):
     resinsight: RipsInstance
     grid_case: GridCase
     path: str = Field(description="Path to the .dev well-trajectory file to load")
+
+
+class ImportGridPropertyInput(BaseModel):
+    """Input for ImportGridProperty: RipsInstance, case, and property paths."""
+
+    model_config = ConfigDict(arbitrary_types_allowed=True)
+
+    resinsight: RipsInstance
+    grid_case: GridCase
+    paths: list[str] = Field(description="Paths to grid property files to load")
 
 
 class AddPerforationInput(BaseModel):

@@ -48,6 +48,7 @@ Issues = "https://github.com/OPM/taskmaestro-resinsight/issues"
 "resinsight.launch" = "taskmaestro_resinsight.launch_resinsight:LaunchResInsight"
 "resinsight.load_model" = "taskmaestro_resinsight.load_model:LoadModel"
 "resinsight.load_well_path" = "taskmaestro_resinsight.load_well_path:LoadWellPath"
+"resinsight.import_grid_property" = "taskmaestro_resinsight.import_grid_property:ImportGridProperty"
 "resinsight.select_eclipse_case" = "taskmaestro_resinsight.select_eclipse_case:SelectEclipseCase"
 "resinsight.select_well_path" = "taskmaestro_resinsight.select_well_path:SelectWellPath"
 

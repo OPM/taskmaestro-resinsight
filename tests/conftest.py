@@ -52,6 +52,22 @@ def egrid_path() -> str:
 
 
 @pytest.fixture
+def roff_grid_path() -> str:
+    """Path to the reek ROFF grid test model."""
+    path = TESTMODELS_DIR / "reek" / "reek_box_grid_w_out_props.roffasc"
+    assert path.exists(), f"Test data not found: {path}"
+    return str(path)
+
+
+@pytest.fixture
+def roff_property_path() -> str:
+    """Path to the reek ROFF property test model."""
+    path = TESTMODELS_DIR / "reek" / "reek_box_PORO_property.roffasc"
+    assert path.exists(), f"Test data not found: {path}"
+    return str(path)
+
+
+@pytest.fixture
 def well_path_a() -> str:
     """Path to wellpath_a.dev test file."""
     path = TEST10K_DIR / "wellpath_a.dev"

@@ -66,6 +66,12 @@ loaded = load_workflow_from_yaml(
 Applications can use `registered_workflows()` as their workflow catalogue and avoid the
 old convention of scanning `~/.taskmaestro/workflows`.
 
+## Included operations
+
+The package includes tasks for launching, connecting to, and exiting ResInsight; opening,
+saving, and closing projects; loading cases, properties, surfaces, and well paths; creating
+and configuring grid views; and creating or exporting well completions.
+
 ## Running tests
 
 ```bash

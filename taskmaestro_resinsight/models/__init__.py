@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import datetime
+from typing import Literal
 
 import rips
 from pydantic import BaseModel, ConfigDict, Field
@@ -29,6 +30,25 @@ class RegularSurface(ObjectModel[rips.Surface]):
 
 class GridView(ObjectModel[rips.View]):
     """Grid view on a loaded Eclipse case."""
+
+
+class ConfigureGridViewInput(BaseModel):
+    """Cell result and time step to display in a grid view."""
+
+    grid_view: GridView
+    result_type: Literal[
+        "DYNAMIC_NATIVE",
+        "STATIC_NATIVE",
+        "SOURSIMRL",
+        "GENERATED",
+        "INPUT_PROPERTY",
+        "FORMATION_NAMES",
+        "ALLAN_DIAGRAMS",
+        "FLOW_DIAGNOSTICS",
+        "INJECTION_FLOODING",
+    ]
+    result_variable: str = Field(min_length=1)
+    time_step: int = Field(default=0, ge=0)
 
 
 class WellPath(ObjectModel[rips.WellPath]):
@@ -61,6 +81,29 @@ class LoadModelInput(BaseModel):
 
     resinsight: RipsInstance
     path: str = Field(description="Path to the .EGRID file to load")
+
+
+class OpenProjectInput(BaseModel):
+    """Input for opening a ResInsight project file."""
+
+    resinsight: RipsInstance
+    path: str = Field(min_length=1, description="Path to the .rsp project file")
+
+
+class SaveProjectInput(BaseModel):
+    """Input for saving the current ResInsight project."""
+
+    resinsight: RipsInstance
+    path: str = Field(
+        default="",
+        description="Destination .rsp path; empty saves to the current project file",
+    )
+
+
+class ExitResult(BaseModel):
+    """Confirmation that the ResInsight exit command was sent."""
+
+    exited: bool
 
 
 class LoadWellPathInput(BaseModel):

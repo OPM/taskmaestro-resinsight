@@ -9,28 +9,38 @@ from taskmaestro import (
 )
 
 from taskmaestro_resinsight.add_perforation import AddPerforation
+from taskmaestro_resinsight.close_project import CloseProject
+from taskmaestro_resinsight.configure_grid_view import ConfigureGridView
 from taskmaestro_resinsight.connect_to_resinsight import ConnectToResInsight
 from taskmaestro_resinsight.create_grid_view import CreateGridView
+from taskmaestro_resinsight.exit_resinsight import ExitResInsight
 from taskmaestro_resinsight.export_completions import ExportCompletions
 from taskmaestro_resinsight.import_grid_property import ImportGridProperty
 from taskmaestro_resinsight.launch_resinsight import LaunchResInsight
 from taskmaestro_resinsight.load_model import LoadModel
 from taskmaestro_resinsight.load_regular_surface import LoadRegularSurface
 from taskmaestro_resinsight.load_well_path import LoadWellPath
+from taskmaestro_resinsight.open_project import OpenProject
+from taskmaestro_resinsight.save_project import SaveProject
 from taskmaestro_resinsight.select_eclipse_case import SelectEclipseCase
 from taskmaestro_resinsight.select_well_path import SelectWellPath
 from taskmaestro_resinsight.workflows import resinsight_completions
 
 EXPECTED_TASKS = {
     "resinsight.add_perforation": AddPerforation,
+    "resinsight.close_project": CloseProject,
+    "resinsight.configure_grid_view": ConfigureGridView,
     "resinsight.connect": ConnectToResInsight,
     "resinsight.create_grid_view": CreateGridView,
+    "resinsight.exit": ExitResInsight,
     "resinsight.export_completions": ExportCompletions,
     "resinsight.launch": LaunchResInsight,
     "resinsight.import_grid_property": ImportGridProperty,
     "resinsight.load_model": LoadModel,
     "resinsight.load_regular_surface": LoadRegularSurface,
     "resinsight.load_well_path": LoadWellPath,
+    "resinsight.open_project": OpenProject,
+    "resinsight.save_project": SaveProject,
     "resinsight.select_eclipse_case": SelectEclipseCase,
     "resinsight.select_well_path": SelectWellPath,
 }

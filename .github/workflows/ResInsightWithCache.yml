@@ -43,16 +43,16 @@ jobs:
             libxcb-randr0 libxcb-render-util0 libxcb-shape0 libxcb-xkb1 \
             xvfb
 
-      - name: Download ResInsight nightly build
+      - name: Download ResInsight release build
         run: |
-          curl -L -o ResInsight-nightly.zip \
-            "https://nightly.link/OPM/ResInsight/workflows/ResInsightWithCache/dev/ResInsight-Ubuntu%2024.04%20gcc.zip"
-          unzip -q ResInsight-nightly.zip -d resinsight-nightly
-          chmod +x resinsight-nightly/bin/ResInsight
+          curl -fL -o ResInsight-release.zip \
+            "https://github.com/OPM/ResInsight/releases/download/v2026.09.1/ResInsight-Ubuntu_24.04_gcc-v2026.09.1.zip"
+          unzip -q ResInsight-release.zip -d resinsight-release
+          chmod +x resinsight-release/bin/ResInsight
 
       - name: Run tests
         env:
-          RESINSIGHT_EXECUTABLE: ${{ github.workspace }}/resinsight-nightly/bin/ResInsight
+          RESINSIGHT_EXECUTABLE: ${{ github.workspace }}/resinsight-release/bin/ResInsight
         run: >
           xvfb-run --auto-servernum
           python -m pytest tests/ -v

@@ -10,6 +10,14 @@ from pydantic import BaseModel, ConfigDict, Field
 from taskmaestro import ObjectModel
 
 
+class Vec3(BaseModel):
+    """Three-dimensional vector with x, y, and z components."""
+
+    x: float
+    y: float
+    z: float
+
+
 class RipsInstance(ObjectModel[rips.Instance]):
     """Active connection to a running ResInsight application."""
 
@@ -114,6 +122,15 @@ class LoadWellPathInput(BaseModel):
     resinsight: RipsInstance
     grid_case: GridCase
     path: str = Field(description="Path to the .dev well-trajectory file to load")
+
+
+class CreateWellPathInput(BaseModel):
+    """Reference point and targets for a modeled well path."""
+
+    resinsight: RipsInstance
+    name: str = Field(min_length=1, description="Name of the well path")
+    reference_point: Vec3
+    targets: list[Vec3] = Field(min_length=1)
 
 
 class LoadRegularSurfaceInput(BaseModel):

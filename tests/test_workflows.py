@@ -13,6 +13,7 @@ from taskmaestro_resinsight.close_project import CloseProject
 from taskmaestro_resinsight.configure_grid_view import ConfigureGridView
 from taskmaestro_resinsight.connect_to_resinsight import ConnectToResInsight
 from taskmaestro_resinsight.create_grid_view import CreateGridView
+from taskmaestro_resinsight.create_well_path import CreateWellPath
 from taskmaestro_resinsight.exit_resinsight import ExitResInsight
 from taskmaestro_resinsight.export_completions import ExportCompletions
 from taskmaestro_resinsight.import_grid_property import ImportGridProperty
@@ -32,6 +33,7 @@ EXPECTED_TASKS = {
     "resinsight.configure_grid_view": ConfigureGridView,
     "resinsight.connect": ConnectToResInsight,
     "resinsight.create_grid_view": CreateGridView,
+    "resinsight.create_well_path": CreateWellPath,
     "resinsight.exit": ExitResInsight,
     "resinsight.export_completions": ExportCompletions,
     "resinsight.launch": LaunchResInsight,

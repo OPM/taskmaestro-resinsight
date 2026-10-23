@@ -122,6 +122,7 @@ class LoadWellPathInput(BaseModel):
     resinsight: RipsInstance
     grid_case: GridCase
     path: str = Field(description="Path to the .dev well-trajectory file to load")
+    well_key: str = Field(default="", description="Key for mapped well-path imports")
 
 
 class CreateWellPathInput(BaseModel):

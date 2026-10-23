@@ -1,0 +1,64 @@
+# A list collect combines two selected-well perforations; a mapped import supplies
+# a dict of additional well paths to a full-length perforation task.
+workflow:
+  name: resinsight_collected_completions
+  tasks:
+    - task: resinsight.connect
+    - task: resinsight.select_eclipse_case
+      depends_on:
+        resinsight: resinsight.connect
+      config_fields: [case]
+    - task: resinsight.select_well_path
+      name: select_well_path_1
+      depends_on:
+        resinsight: resinsight.connect
+        grid_case: resinsight.select_eclipse_case
+      config_fields: [well_path]
+    - task: resinsight.select_well_path
+      name: select_well_path_2
+      depends_on:
+        resinsight: resinsight.connect
+        grid_case: resinsight.select_eclipse_case
+      config_fields: [well_path]
+    - task: resinsight.add_perforation
+      name: add_perf_1
+      depends_on:
+        resinsight: resinsight.connect
+        well_path: select_well_path_1
+      config_fields: [event_date, start_md, end_md]
+    - task: resinsight.add_perforation
+      name: add_perf_2
+      depends_on:
+        resinsight: resinsight.connect
+        well_path: select_well_path_2
+      config_fields: [event_date, start_md, end_md]
+    - task: resinsight.load_well_path
+      name: load_wells
+      depends_on:
+        resinsight: resinsight.connect
+        grid_case: resinsight.select_eclipse_case
+      map:
+        over: paths
+        key_as: well_key
+        value_as: path
+    - task: resinsight.add_full_length_perforations
+      depends_on:
+        resinsight: resinsight.connect
+        well_paths: load_wells
+      config_fields: [event_date]
+    - task: resinsight.merge_perforations
+      depends_on:
+        selected:
+          collect: [add_perf_1, add_perf_2]
+        loaded: [resinsight.add_full_length_perforations, perforations]
+    - task: resinsight.export_collected_completions
+      depends_on:
+        resinsight: resinsight.connect
+        grid_case: resinsight.select_eclipse_case
+        perforations: [resinsight.merge_perforations, perforations]
+      config_fields: [event_date, export_path]
+
+runner:
+  hooks:
+    - hook: taskmaestro.hooks.logging.LoggingHook
+    - hook: taskmaestro.hooks.timing.TimingHook

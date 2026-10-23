@@ -8,6 +8,10 @@ from taskmaestro import (
     registered_workflow_names,
 )
 
+from taskmaestro_resinsight.add_full_length_perforation import (
+    AddFullLengthPerforation,
+    AddFullLengthPerforations,
+)
 from taskmaestro_resinsight.add_perforation import AddPerforation
 from taskmaestro_resinsight.close_project import CloseProject
 from taskmaestro_resinsight.configure_grid_view import ConfigureGridView
@@ -15,12 +19,16 @@ from taskmaestro_resinsight.connect_to_resinsight import ConnectToResInsight
 from taskmaestro_resinsight.create_grid_view import CreateGridView
 from taskmaestro_resinsight.create_well_path import CreateWellPath
 from taskmaestro_resinsight.exit_resinsight import ExitResInsight
-from taskmaestro_resinsight.export_completions import ExportCompletions
+from taskmaestro_resinsight.export_completions import (
+    ExportCollectedCompletions,
+    ExportCompletions,
+)
 from taskmaestro_resinsight.import_grid_property import ImportGridProperty
 from taskmaestro_resinsight.launch_resinsight import LaunchResInsight
 from taskmaestro_resinsight.load_model import LoadModel
 from taskmaestro_resinsight.load_regular_surface import LoadRegularSurface
 from taskmaestro_resinsight.load_well_path import LoadWellPath
+from taskmaestro_resinsight.merge_perforations import MergePerforations
 from taskmaestro_resinsight.open_project import OpenProject
 from taskmaestro_resinsight.save_project import SaveProject
 from taskmaestro_resinsight.select_eclipse_case import SelectEclipseCase
@@ -29,6 +37,8 @@ from taskmaestro_resinsight.workflows import resinsight_completions
 
 EXPECTED_TASKS = {
     "resinsight.add_perforation": AddPerforation,
+    "resinsight.add_full_length_perforation": AddFullLengthPerforation,
+    "resinsight.add_full_length_perforations": AddFullLengthPerforations,
     "resinsight.close_project": CloseProject,
     "resinsight.configure_grid_view": ConfigureGridView,
     "resinsight.connect": ConnectToResInsight,
@@ -36,11 +46,13 @@ EXPECTED_TASKS = {
     "resinsight.create_well_path": CreateWellPath,
     "resinsight.exit": ExitResInsight,
     "resinsight.export_completions": ExportCompletions,
+    "resinsight.export_collected_completions": ExportCollectedCompletions,
     "resinsight.launch": LaunchResInsight,
     "resinsight.import_grid_property": ImportGridProperty,
     "resinsight.load_model": LoadModel,
     "resinsight.load_regular_surface": LoadRegularSurface,
     "resinsight.load_well_path": LoadWellPath,
+    "resinsight.merge_perforations": MergePerforations,
     "resinsight.open_project": OpenProject,
     "resinsight.save_project": SaveProject,
     "resinsight.select_eclipse_case": SelectEclipseCase,

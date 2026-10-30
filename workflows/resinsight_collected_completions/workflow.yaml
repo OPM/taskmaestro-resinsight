@@ -1,5 +1,5 @@
-# A list collect combines two selected-well perforations; a mapped import supplies
-# a dict of additional well paths to a full-length perforation task.
+# A list collect combines two selected-well perforations with the dict of
+# full-length perforations on mapped well paths; dict values are flattened.
 workflow:
   name: resinsight_collected_completions
   tasks:
@@ -46,16 +46,15 @@ workflow:
         resinsight: resinsight.connect
         well_paths: load_wells
       config_fields: [event_date]
-    - task: resinsight.merge_perforations
-      depends_on:
-        selected:
-          collect: [add_perf_1, add_perf_2]
-        loaded: [resinsight.add_full_length_perforations, perforations]
     - task: resinsight.export_collected_completions
       depends_on:
         resinsight: resinsight.connect
         grid_case: resinsight.select_eclipse_case
-        perforations: [resinsight.merge_perforations, perforations]
+        perforations:
+          collect:
+            - add_perf_1
+            - add_perf_2
+            - [resinsight.add_full_length_perforations, perforations]
       config_fields: [event_date, export_path]
 
 runner:

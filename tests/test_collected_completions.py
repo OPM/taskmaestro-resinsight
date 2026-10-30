@@ -15,10 +15,6 @@ from taskmaestro_resinsight.add_full_length_perforation import (
 )
 from taskmaestro_resinsight.add_perforation import AddPerforation
 from taskmaestro_resinsight.export_completions import ExportCollectedCompletions
-from taskmaestro_resinsight.merge_perforations import (
-    MergePerforations,
-    MergePerforationsInput,
-)
 from taskmaestro_resinsight.models import PerforationOutput, RipsInstance, WellPath
 
 EXAMPLE = (
@@ -40,12 +36,18 @@ def test_example_graph() -> None:
         "load_wells",
         "root",
     )
-    merged = workflow.get_dependencies("merge_perforations")
-    assert isinstance(merged["selected"], CollectionRef)
-    assert merged["selected"].kind == "positional"
-    assert merged["loaded"] == ("add_full_length_perforations", "perforations")
     deps = workflow.get_dependencies("export_collected_completions")
-    assert deps["perforations"] == ("merge_perforations", "perforations")
+    collection = deps["perforations"]
+    assert isinstance(collection, CollectionRef)
+    assert collection.kind == "positional"
+    assert [
+        (ref.task_name, ref.output_field, mode)
+        for _, ref, mode in collection.labeled_members()
+    ] == [
+        ("add_perf_1", None, "item"),
+        ("add_perf_2", None, "item"),
+        ("add_full_length_perforations", "perforations", "dict"),
+    ]
 
 
 def test_collected_export_combines_well_names() -> None:
@@ -73,20 +75,6 @@ def test_collected_export_combines_well_names() -> None:
     )
     task.run(inputs, Mock())
     assert task._export.call_args.args[2] == ["A", "B", "C"]
-
-
-def test_merge_flattens_selected_and_loaded_perforations() -> None:
-    selected = PerforationOutput.model_construct(
-        value=SimpleNamespace(name="A"), start_md=1, end_md=2
-    )
-    imported = PerforationOutput.model_construct(
-        value=SimpleNamespace(name="B"), start_md=0, end_md=10
-    )
-    result = MergePerforations().run(
-        MergePerforationsInput(selected=[selected], loaded={"well_b": imported}),
-        Mock(),
-    )
-    assert result.perforations == [selected, imported]
 
 
 def test_full_length_uses_trajectory_md_bounds() -> None:

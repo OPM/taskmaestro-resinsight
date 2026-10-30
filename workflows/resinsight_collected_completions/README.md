@@ -1,8 +1,7 @@
 # Collect and perforate selected and mapped well paths
 
 This example sits beside `resinsight_completions`. Two selected wells receive
-explicit MD intervals. `collect: [add_perf_1, add_perf_2]` passes those results
-as a `list[PerforationOutput]` to `merge_perforations`.
+explicit MD intervals.
 
 `load_wells` maps over the `paths` dictionary in `input.yaml`: each key becomes
 `well_key`, each value becomes `path`, and the result is a dictionary of
@@ -11,9 +10,12 @@ via its `well_paths` port and applies `AddFullLengthPerforation` to each well.
 That single-well task reads `trajectory_properties(resampling_interval=10.0)`
 and uses the minimum and maximum measured depths to create an event. A missing,
 invalid or zero-length trajectory raises an error. The batch output preserves
-the mapping keys. `merge_perforations` flattens that dictionary and the
-selected-well list into one `list[PerforationOutput]`. The exporter has just
-one `perforations` port for all wells, including the imported ones.
+the mapping keys.
+
+The exporter has just one `perforations: list[PerforationOutput]` port for all
+wells. A single `collect` fills it: `add_perf_1` and `add_perf_2` are added as
+items, and the `dict[str, PerforationOutput]` from
+`add_full_length_perforations` is flattened into its values in mapping order.
 
 Replace the placeholder `.dev` paths and supply runtime `case` and `well_path`
 values (as with `resinsight_completions`) before running with ResInsight.

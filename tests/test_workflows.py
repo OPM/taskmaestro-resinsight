@@ -28,7 +28,6 @@ from taskmaestro_resinsight.launch_resinsight import LaunchResInsight
 from taskmaestro_resinsight.load_model import LoadModel
 from taskmaestro_resinsight.load_regular_surface import LoadRegularSurface
 from taskmaestro_resinsight.load_well_path import LoadWellPath
-from taskmaestro_resinsight.merge_perforations import MergePerforations
 from taskmaestro_resinsight.open_project import OpenProject
 from taskmaestro_resinsight.save_project import SaveProject
 from taskmaestro_resinsight.select_eclipse_case import SelectEclipseCase
@@ -52,7 +51,6 @@ EXPECTED_TASKS = {
     "resinsight.load_model": LoadModel,
     "resinsight.load_regular_surface": LoadRegularSurface,
     "resinsight.load_well_path": LoadWellPath,
-    "resinsight.merge_perforations": MergePerforations,
     "resinsight.open_project": OpenProject,
     "resinsight.save_project": SaveProject,
     "resinsight.select_eclipse_case": SelectEclipseCase,
